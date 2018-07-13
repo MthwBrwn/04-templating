@@ -11,11 +11,13 @@ function Article (rawDataObj) {
   this.publishedOn = rawDataObj.publishedOn;
 }
 
-Article.prototype.toHtml = function() {
+Article.prototype.toHtml = function () {
   // TODO: Use Handlebars to render your articles. Get your template from the DOM and "compile" your template with Handlebars.
-
+  let template = $('#blog-entry-template').html();
   // REVIEW: If your template will use properties that aren't on the object yet, add them.
   // Since your template can't hold any JS logic, we need to execute the logic here.
+  let templateRender = Handlebars.compile(template);
+
   // The result is added to the object as a new property, which can then be referenced by key in the template.
   // For example, you might want to display how old a post is, or say "(draft)" if it has no publication date:
   this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
@@ -30,12 +32,13 @@ Article.prototype.toHtml = function() {
   //   this.publishStatus = '(draft)';
   // }
 
-  // TODO: Use the method that Handlebars gave you to return your filled-in html template for THIS article.
+  // TODone: Use the method that Handlebars gave you to return your filled-in html template for THIS article.
+  return templateRender(this);
 
 };
 
 // COMMENT: Why are there parentheses around "(a,b)" in the .sort() method, but not around the "articleObject" or "article" arguments in the .forEach() methods?
-// PUT YOUR RESPONSE HERE
+// the parens () are around the a,b in sort because in ES-6 they need to be there when there are multiple parameters in the method. forEach only has the single parameter for the () does not need to be there.  
 rawData.sort((a,b) => {
   return (new Date(b.publishedOn)) - (new Date(a.publishedOn));
 });
